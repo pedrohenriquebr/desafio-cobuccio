@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  nestjs-app: # Updated service name
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    # environment: # Aqui por definir algumas variáveis de ambiente, se achar necessário
+      # PORT: 3000
+    volumes:
+      - ./logs/:/usr/src/app/logs # Para logging
+    command: npm run start:dev # For development with watch mode
