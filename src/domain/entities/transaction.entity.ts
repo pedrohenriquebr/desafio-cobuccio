@@ -6,7 +6,13 @@ export class Transaction {
   public readonly type: 'credit' | 'debit'; // Retaining type from previous version, guide focuses on amount and timestamp
   public readonly timestamp: Date;
 
-  constructor(amount: number, timestamp: Date, id?: string, type?: 'credit' | 'debit') { // Added type back
+  constructor(
+    amount: number,
+    timestamp: Date,
+    id?: string,
+    type?: 'credit' | 'debit',
+  ) {
+    // Added type back
     if (amount < 0) {
       throw new Error('Transaction amount cannot be negative.');
     }

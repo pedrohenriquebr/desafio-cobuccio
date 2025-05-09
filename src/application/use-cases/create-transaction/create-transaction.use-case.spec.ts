@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CreateTransactionUseCase } from './create-transaction.use-case';
-import { ITransactionRepository, TRANSACTION_REPOSITORY } from '../../../domain/repositories/transaction.repository.interface';
+import { TRANSACTION_REPOSITORY } from '../../../domain/repositories/transaction.repository.interface';
 import { Transaction } from '../../../domain/entities/transaction.entity';
-import { UnprocessableEntityException, BadRequestException } from '@nestjs/common';
+import { UnprocessableEntityException } from '@nestjs/common';
 import { CreateTransactionDto } from './create-transaction.dto';
 
 const mockTransactionRepository = {
@@ -32,15 +32,24 @@ describe('CreateTransactionUseCase', () => {
   });
 
   it('should create a transaction successfully', async () => {
-    const dto: CreateTransactionDto = { amount: 100, timestamp: new Date(Date.now() - 1000).toISOString() };
-    const expectedTransaction = new Transaction(dto.amount, new Date(dto.timestamp));
+    const dto: CreateTransactionDto = {
+      amount: 100,
+      timestamp: new Date(Date.now() - 1000).toISOString(),
+    };
+    const expectedTransaction = new Transaction(
+      dto.amount,
+      new Date(dto.timestamp),
+    );
     mockTransactionRepository.create.mockResolvedValue(expectedTransaction);
 
     const result = await useCase.execute(dto);
 
     expect(result).toEqual(expectedTransaction);
     expect(mockTransactionRepository.create).toHaveBeenCalledWith(
-      expect.objectContaining({amount: expectedTransaction.amount, timestamp: expectedTransaction.timestamp}),
+      expect.objectContaining({
+        amount: expectedTransaction.amount,
+        timestamp: expectedTransaction.timestamp,
+      }),
     );
   });
 
@@ -48,8 +57,11 @@ describe('CreateTransactionUseCase', () => {
     const futureDate = new Date(Date.now() + 1000 * 60 * 60).toISOString(); // 1 hora no futuro
     const dto: CreateTransactionDto = { amount: 100, timestamp: futureDate };
 
-    await expect(useCase.execute(dto)).rejects.toThrow(UnprocessableEntityException);
-    await expect(useCase.execute(dto)).rejects.toThrow('Transaction timestamp cannot be in the future.');
+    await expect(useCase.execute(dto)).rejects.toThrow(
+      UnprocessableEntityException,
+    );
+    await expect(useCase.execute(dto)).rejects.toThrow(
+      'Transaction timestamp cannot be in the future.',
+    );
   });
-
 });

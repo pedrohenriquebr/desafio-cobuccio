@@ -13,7 +13,10 @@ describe('TransactionController', () => {
       providers: [
         { provide: CreateTransactionUseCase, useValue: { execute: jest.fn() } },
         { provide: GetStatisticsUseCase, useValue: { execute: jest.fn() } },
-        { provide: DeleteAllTransactionsUseCase, useValue: { execute: jest.fn() } },
+        {
+          provide: DeleteAllTransactionsUseCase,
+          useValue: { execute: jest.fn() },
+        },
       ],
     }).compile();
 

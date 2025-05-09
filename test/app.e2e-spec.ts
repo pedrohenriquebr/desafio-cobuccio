@@ -1,5 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication, ValidationPipe, BadRequestException, HttpStatus } from '@nestjs/common';
+import {
+  INestApplication,
+  ValidationPipe,
+  BadRequestException,
+  HttpStatus,
+} from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { InMemoryTransactionRepository } from '../src/infrastructure/repositories/in-memory-transaction.repository';
@@ -13,9 +18,9 @@ describe('TransactionController (e2e)', () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     })
-    .overrideProvider(TRANSACTION_REPOSITORY)
-    .useClass(InMemoryTransactionRepository)
-    .compile();
+      .overrideProvider(TRANSACTION_REPOSITORY)
+      .useClass(InMemoryTransactionRepository)
+      .compile();
 
     app = moduleFixture.createNestApplication();
     app.useGlobalPipes(
@@ -26,7 +31,8 @@ describe('TransactionController (e2e)', () => {
         transformOptions: { enableImplicitConversion: true },
         exceptionFactory: (errors) => {
           const messages = errors.map(
-            (error) => `${error.property}: ${Object.values(error.constraints).join(', ')}`,
+            (error) =>
+              `${error.property}: ${Object.values(error.constraints).join(', ')}`,
           );
           return new BadRequestException({
             statusCode: 400,
@@ -37,7 +43,9 @@ describe('TransactionController (e2e)', () => {
       }),
     );
     await app.init();
-    transactionRepository = moduleFixture.get<InMemoryTransactionRepository>(TRANSACTION_REPOSITORY);
+    transactionRepository = moduleFixture.get<InMemoryTransactionRepository>(
+      TRANSACTION_REPOSITORY,
+    );
   });
 
   beforeEach(async () => {
@@ -61,11 +69,13 @@ describe('TransactionController (e2e)', () => {
       return request(app.getHttpServer())
         .post('/transactions')
         .set('Content-Type', 'application/json')
-        .send({ amount: 10, timestamp: "bad-date-format" })
+        .send({ amount: 10, timestamp: 'bad-date-format' })
         .expect(HttpStatus.BAD_REQUEST)
-        .then(response => {
+        .then((response) => {
           expect(response.body.message).toEqual('Validation failed');
-          expect(response.body.errors).toContain('timestamp: Timestamp must be a valid ISO 8601 date string.');
+          expect(response.body.errors).toContain(
+            'timestamp: Timestamp must be a valid ISO 8601 date string.',
+          );
         });
     });
 
@@ -75,13 +85,15 @@ describe('TransactionController (e2e)', () => {
         .post('/transactions')
         .send({ timestamp: validTimestamp })
         .expect(HttpStatus.BAD_REQUEST)
-        .then(response => {
+        .then((response) => {
           expect(response.body.message).toEqual('Validation failed');
-          expect(response.body.errors).toEqual(expect.arrayContaining([
-            "amount: Amount must be a number.",
-            "amount: Amount cannot be negative.",
-            "amount: Amount is required."
-          ]));
+          expect(response.body.errors).toEqual(
+            expect.arrayContaining([
+              'amount: Amount must be a number.',
+              'amount: Amount cannot be negative.',
+              'amount: Amount is required.',
+            ]),
+          );
         });
     });
 
@@ -91,8 +103,10 @@ describe('TransactionController (e2e)', () => {
         .post('/transactions')
         .send({ amount: 50, timestamp: futureTimestamp })
         .expect(HttpStatus.UNPROCESSABLE_ENTITY)
-        .then(response => {
-          expect(response.body.message).toContain('Transaction timestamp cannot be in the future.');
+        .then((response) => {
+          expect(response.body.message).toContain(
+            'Transaction timestamp cannot be in the future.',
+          );
         });
     });
 
@@ -102,8 +116,10 @@ describe('TransactionController (e2e)', () => {
         .post('/transactions')
         .send({ amount: -10, timestamp: validTimestamp })
         .expect(HttpStatus.UNPROCESSABLE_ENTITY)
-        .then(response => {
-          expect(response.body.message).toContain('Transaction amount cannot be negative.');
+        .then((response) => {
+          expect(response.body.message).toContain(
+            'Transaction amount cannot be negative.',
+          );
         });
     });
   });
@@ -111,8 +127,12 @@ describe('TransactionController (e2e)', () => {
   describe('/transactions (DELETE)', () => {
     it('should delete all transactions and return 200', async () => {
       const validTimestamp = new Date(Date.now() - 10000).toISOString();
-      await request(app.getHttpServer()).post('/transactions').send({ amount: 10, timestamp: validTimestamp });
-      await request(app.getHttpServer()).post('/transactions').send({ amount: 20, timestamp: validTimestamp });
+      await request(app.getHttpServer())
+        .post('/transactions')
+        .send({ amount: 10, timestamp: validTimestamp });
+      await request(app.getHttpServer())
+        .post('/transactions')
+        .send({ amount: 20, timestamp: validTimestamp });
 
       return request(app.getHttpServer())
         .delete('/transactions')
@@ -137,10 +157,21 @@ describe('TransactionController (e2e)', () => {
 
     it('should return correct statistics for transactions in the last 60 seconds', async () => {
       const now = Date.now();
-      await request(app.getHttpServer()).post('/transactions').send({ amount: 10.50, timestamp: new Date(now - 10000).toISOString() });
-      await request(app.getHttpServer()).post('/transactions').send({ amount: 20.00, timestamp: new Date(now - 20000).toISOString() });
-      await request(app.getHttpServer()).post('/transactions').send({ amount: 5.25, timestamp: new Date(now - 30000).toISOString() });
-      await request(app.getHttpServer()).post('/transactions').send({ amount: 100.00, timestamp: new Date(now - 70000).toISOString() });
+      await request(app.getHttpServer())
+        .post('/transactions')
+        .send({ amount: 10.5, timestamp: new Date(now - 10000).toISOString() });
+      await request(app.getHttpServer())
+        .post('/transactions')
+        .send({ amount: 20.0, timestamp: new Date(now - 20000).toISOString() });
+      await request(app.getHttpServer())
+        .post('/transactions')
+        .send({ amount: 5.25, timestamp: new Date(now - 30000).toISOString() });
+      await request(app.getHttpServer())
+        .post('/transactions')
+        .send({
+          amount: 100.0,
+          timestamp: new Date(now - 70000).toISOString(),
+        });
 
       const response = await request(app.getHttpServer())
         .get('/transactions/statistics')
@@ -149,7 +180,7 @@ describe('TransactionController (e2e)', () => {
       expect(response.body.count).toBe(3);
       expect(response.body.sum).toBeCloseTo(35.75);
       expect(response.body.avg).toBeCloseTo(11.92);
-      expect(response.body.max).toBeCloseTo(20.00);
+      expect(response.body.max).toBeCloseTo(20.0);
       expect(response.body.min).toBeCloseTo(5.25);
     });
   });
@@ -162,7 +193,9 @@ describe('TransactionController (e2e)', () => {
 
       expect(response.body.status).toEqual('ok');
       expect(response.body.timestamp).toBeDefined();
-      expect(new Date(response.body.timestamp).getTime()).toBeLessThanOrEqual(new Date().getTime());
+      expect(new Date(response.body.timestamp).getTime()).toBeLessThanOrEqual(
+        new Date().getTime(),
+      );
     });
   });
 });

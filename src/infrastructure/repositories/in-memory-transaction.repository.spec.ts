@@ -18,8 +18,8 @@ describe('InMemoryTransactionRepository', () => {
   });
 
   it('should find all transactions', async () => {
-    const transaction1 = new Transaction(100,undefined, 'credit');
-    const transaction2 = new Transaction(50, undefined,'debit');
+    const transaction1 = new Transaction(100, undefined, 'credit');
+    const transaction2 = new Transaction(50, undefined, 'debit');
     await repository.create(transaction1);
     await repository.create(transaction2);
     const allTransactions = await repository.findAll();
@@ -73,12 +73,17 @@ describe('InMemoryTransactionRepository', () => {
     it('should include transactions exactly at the boundary and exclude those just outside', async () => {
       const now = Date.now();
       // Transaction exactly 60 seconds ago (should be included)
-      const transactionOnBoundary = new Transaction(50, new Date(now - 60 * 1000));
+      const transactionOnBoundary = new Transaction(
+        50,
+        new Date(now - 60 * 1000),
+      );
       // Transaction 60.001 seconds ago (should be excluded)
-      const transactionOutsideBoundary = new Transaction(60, new Date(now - 60 * 1000 - 1));
+      const transactionOutsideBoundary = new Transaction(
+        60,
+        new Date(now - 60 * 1000 - 1),
+      );
       // Transaction 0 seconds ago (now, should be included)
       const transactionNow = new Transaction(70, new Date(now));
-
 
       await repository.create(transactionOnBoundary);
       await repository.create(transactionOutsideBoundary);

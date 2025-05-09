@@ -1,5 +1,8 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { ITransactionRepository, TRANSACTION_REPOSITORY } from '../../../domain/repositories/transaction.repository.interface';
+import {
+  ITransactionRepository,
+  TRANSACTION_REPOSITORY,
+} from '../../../domain/repositories/transaction.repository.interface';
 import { StatisticsDto } from './get-statistics.dto';
 // import { Transaction } from '../../../domain/entities/transaction.entity'; // Not directly used here
 
@@ -17,7 +20,9 @@ export class GetStatisticsUseCase {
       return { sum: 0, avg: 0, max: 0, min: 0, count: 0 };
     }
 
-    const amounts = recentTransactions.map((t) => t.type =='credit' ?  t.amount: -t.amount);
+    const amounts = recentTransactions.map((t) =>
+      t.type == 'credit' ? t.amount : -t.amount,
+    );
     const sum = amounts.reduce((acc, current) => acc + current, 0);
     const count = amounts.length;
     const avg = sum / count;

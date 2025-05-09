@@ -9,7 +9,8 @@ export const loggerOptions: winston.LoggerOptions = {
         winston.format.ms(),
         winston.format.colorize(),
         winston.format.printf(
-          (info) => `${info.timestamp} ${info.level}: ${info.message} ${info.ms || ''} ${info.context ? '[' + info.context + ']' : ''} ${info.stack || ''}`,
+          (info) =>
+            `${info.timestamp} ${info.level}: ${info.message} ${info.ms || ''} ${info.context ? '[' + info.context + ']' : ''} ${info.stack || ''}`,
         ),
       ),
     }),
@@ -19,7 +20,8 @@ export const loggerOptions: winston.LoggerOptions = {
         winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
         winston.format.ms(),
         winston.format.printf(
-          (info) => `${info.timestamp} ${info.level}: ${info.message} ${info.ms || ''} ${info.context ? '[' + info.context + ']' : ''} ${info.stack || ''}`,
+          (info) =>
+            `${info.timestamp} ${info.level}: ${info.message} ${info.ms || ''} ${info.context ? '[' + info.context + ']' : ''} ${info.stack || ''}`,
         ),
       ),
     }),

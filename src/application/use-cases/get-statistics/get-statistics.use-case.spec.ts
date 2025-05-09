@@ -1,6 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { GetStatisticsUseCase } from './get-statistics.use-case';
-import { ITransactionRepository, TRANSACTION_REPOSITORY } from '../../../domain/repositories/transaction.repository.interface';
+import {
+  ITransactionRepository,
+  TRANSACTION_REPOSITORY,
+} from '../../../domain/repositories/transaction.repository.interface';
 import { Transaction } from '../../../domain/entities/transaction.entity';
 import { StatisticsDto } from './get-statistics.dto';
 
@@ -38,7 +41,13 @@ describe('GetStatisticsUseCase', () => {
 
   it('should return zero statistics if no recent transactions are found', async () => {
     mockTransactionRepository.findRecent.mockResolvedValue([]);
-    const expectedStatistics: StatisticsDto = { sum: 0, avg: 0, max: 0, min: 0, count: 0 };
+    const expectedStatistics: StatisticsDto = {
+      sum: 0,
+      avg: 0,
+      max: 0,
+      min: 0,
+      count: 0,
+    };
 
     const result = await useCase.execute();
 
@@ -49,9 +58,9 @@ describe('GetStatisticsUseCase', () => {
   it('should calculate statistics correctly for recent transactions', async () => {
     const now = new Date();
     const transactions = [
-      new Transaction(10.50, new Date(now.getTime() - 10000)), // 10s ago
-      new Transaction(20.00, new Date(now.getTime() - 20000)), // 20s ago
-      new Transaction(5.25, new Date(now.getTime() - 30000)),   // 30s ago
+      new Transaction(10.5, new Date(now.getTime() - 10000)), // 10s ago
+      new Transaction(20.0, new Date(now.getTime() - 20000)), // 20s ago
+      new Transaction(5.25, new Date(now.getTime() - 30000)), // 30s ago
     ];
     mockTransactionRepository.findRecent.mockResolvedValue(transactions);
 
@@ -60,7 +69,7 @@ describe('GetStatisticsUseCase', () => {
     expect(result.count).toBe(3);
     expect(result.sum).toBeCloseTo(35.75);
     expect(result.avg).toBeCloseTo(11.92); // 35.75 / 3
-    expect(result.max).toBeCloseTo(20.00);
+    expect(result.max).toBeCloseTo(20.0);
     expect(result.min).toBeCloseTo(5.25);
     expect(repository.findRecent).toHaveBeenCalledWith(60);
   });
@@ -68,16 +77,16 @@ describe('GetStatisticsUseCase', () => {
   it('should handle a single transaction correctly', async () => {
     const now = new Date();
     const transactions = [
-      new Transaction(100.00, new Date(now.getTime() - 5000)), // 5s ago
+      new Transaction(100.0, new Date(now.getTime() - 5000)), // 5s ago
     ];
     mockTransactionRepository.findRecent.mockResolvedValue(transactions);
 
     const result = await useCase.execute();
 
     expect(result.count).toBe(1);
-    expect(result.sum).toBeCloseTo(100.00);
-    expect(result.avg).toBeCloseTo(100.00);
-    expect(result.max).toBeCloseTo(100.00);
-    expect(result.min).toBeCloseTo(100.00);
+    expect(result.sum).toBeCloseTo(100.0);
+    expect(result.avg).toBeCloseTo(100.0);
+    expect(result.max).toBeCloseTo(100.0);
+    expect(result.min).toBeCloseTo(100.0);
   });
 });

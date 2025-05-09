@@ -1,6 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { DeleteAllTransactionsUseCase } from './delete-all-transactions.use-case';
-import { ITransactionRepository, TRANSACTION_REPOSITORY } from '../../../domain/repositories/transaction.repository.interface';
+import {
+  ITransactionRepository,
+  TRANSACTION_REPOSITORY,
+} from '../../../domain/repositories/transaction.repository.interface';
 
 const mockTransactionRepository = {
   create: jest.fn(),
@@ -25,7 +28,9 @@ describe('DeleteAllTransactionsUseCase', () => {
       ],
     }).compile();
 
-    useCase = module.get<DeleteAllTransactionsUseCase>(DeleteAllTransactionsUseCase);
+    useCase = module.get<DeleteAllTransactionsUseCase>(
+      DeleteAllTransactionsUseCase,
+    );
     repository = module.get<ITransactionRepository>(TRANSACTION_REPOSITORY);
     mockTransactionRepository.deleteAll.mockClear();
   });
