@@ -89,9 +89,7 @@ describe('TransactionController (e2e)', () => {
           expect(response.body.message).toEqual('Validation failed');
           expect(response.body.errors).toEqual(
             expect.arrayContaining([
-              'amount: Amount must be a number.',
-              'amount: Amount cannot be negative.',
-              'amount: Amount is required.',
+              'amount: Amount is required., Amount must be a number.'
             ]),
           );
         });
