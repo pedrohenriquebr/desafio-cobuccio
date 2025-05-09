@@ -163,11 +163,6 @@ Para parar e remover o container:
 ```bash
 docker-compose down
 ```
-Ok, vamos reescrever a seção "Diferenciais" do seu README para refletir a integração com Prometheus e Grafana que você configurou, incluindo as instruções de login e importação do dashboard.
-
-Aqui está a sugestão:
-
----
 
 ## 6. Diferenciais e Monitoramento com Prometheus & Grafana
 
