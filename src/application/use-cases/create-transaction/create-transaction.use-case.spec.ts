@@ -64,4 +64,18 @@ describe('CreateTransactionUseCase', () => {
       'Transaction timestamp cannot be in the future.',
     );
   });
+
+  it('should throw UnprocessableEntityException for negative amount', async () => {
+    const dto: CreateTransactionDto = {
+      amount: -50,
+      timestamp: new Date().toISOString(),
+    };
+
+    await expect(useCase.execute(dto)).rejects.toThrow(
+      UnprocessableEntityException,
+    );
+    await expect(useCase.execute(dto)).rejects.toThrow(
+      'Transaction amount cannot be negative.',
+    );
+  });
 });

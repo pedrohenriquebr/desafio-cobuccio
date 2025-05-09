@@ -23,6 +23,12 @@ export class CreateTransactionUseCase {
   ): Promise<Transaction> {
     const { amount, timestamp } = createTransactionDto;
 
+    if (amount < 0) {
+      throw new UnprocessableEntityException(
+        'Transaction amount cannot be negative.',
+      );
+    }
+
     const timestampAsDate = new Date(timestamp);
 
     const now = new Date();
@@ -36,10 +42,10 @@ export class CreateTransactionUseCase {
     try {
       // Assuming 'type' is determined by amount or passed differently if needed
       const transaction = new Transaction(
-        amount < 0 ? -amount : amount,
+        amount, // Amount is already validated to be non-negative
         timestampAsDate,
         undefined,
-        amount < 0 ? 'debit' : 'credit',
+        'credit', // Since amount cannot be negative, it's always credit based on this use case
       );
       return await this.transactionRepository.create(transaction);
     } catch (error) {
