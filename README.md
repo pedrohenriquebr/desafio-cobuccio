@@ -9,7 +9,7 @@
 
 API RESTful desenvolvida com NestJS e TypeScript para gerenciar transações financeiras e fornecer estatísticas, seguindo os princípios da Clean Architecture.
 
-## Table of Contents
+## Sumário
 
 - [1. Introdução](#1-introdução)
 - [2. Requisitos Técnicos Atendidos](#2-requisitos-técnicos-atendidos)
@@ -163,23 +163,46 @@ Para parar e remover o container:
 ```bash
 docker-compose down
 ```
+Ok, vamos reescrever a seção "Diferenciais" do seu README para refletir a integração com Prometheus e Grafana que você configurou, incluindo as instruções de login e importação do dashboard.
 
-## 6. Diferenciais e Próximos Passos
+Aqui está a sugestão:
 
--   **CI/CD**: Pipeline de Integração Contínua configurado com GitHub Actions (ver `.github/workflows/ci.yml`).
--   **Métricas**: Embora não implementado, o NestJS possui integrações que facilitariam a exposição de métricas para ferramentas como Prometheus/Grafana.
--   **WebSockets**: Não implementado, mas seria uma adição interessante para fornecer estatísticas em tempo real para clientes conectados.
+---
+
+## 6. Diferenciais e Monitoramento com Prometheus & Grafana
+
+*   **CI/CD (Integração Contínua/Entrega Contínua):**
+    *   Um pipeline de Integração Contínua está configurado usando **GitHub Actions**. Você pode conferir o workflow em `.github/workflows/ci.yml`. Ele automatiza a execução de testes e builds a cada novo commit ou pull request, garantindo a qualidade e estabilidade do código.
+
+*   **Métricas e Monitoramento com Prometheus & Grafana:**
+    *   A aplicação está configurada para expor métricas no formato Prometheus através de um endpoint `/metrics`. Isso permite um monitoramento detalhado da saúde e performance da API.
+    *   **Como visualizar:**
+        1.  Após iniciar os serviços com `docker-compose up -d`, o **Grafana** estará acessível em `http://localhost:3001`.
+        2.  Faça login no Grafana utilizando as credenciais padrão:
+            *   **Usuário:** `admin`
+            *   **Senha:** `admin`
+            *   (Será solicitado que você altere a senha no primeiro login).
+        3.  **Importar o Dashboard:**
+            *   No menu lateral esquerdo do Grafana, clique no ícone "+" (Create) e depois em "Import dashboard".
+            *   Clique no botão "Upload JSON file" e selecione o arquivo `nestjs-app-dashboard.json` (que você exportou ou que está no diretório `grafana_config/dashboards_json/` do projeto, se você o versionou).
+            *   Siga as instruções na tela, selecionando o datasource "Prometheus" (que deve ter sido provisionado automaticamente) quando solicitado.
+            *   Alternativamente, se você configurou o provisionamento automático de dashboards (conforme discutido anteriormente, com `dashboard_providers.yaml`), o dashboard já deve aparecer listado, possivelmente dentro de uma pasta como "App Dashboards".
+        4.  Com o dashboard importado/carregado, você poderá visualizar métricas como taxa de requisições, latência, contagem de transações ativas, e outras métricas padrão do Node.js.
+
+*   **WebSockets para Estatísticas em Tempo Real (Próximo Passo):**
+    *   Embora não implementado neste momento, uma evolução natural seria a utilização de WebSockets para enviar atualizações das estatísticas em tempo real para clientes conectados, em vez de depender apenas do polling no endpoint `GET /transactions/statistics`.
 
 ## 7. Decisões de Design e Boas Práticas
 
--   **Clean Architecture**: Escolhida para promover uma clara separação de responsabilidades, alta coesão, baixo acoplamento e maior testabilidade.
--   **SOLID**: Os princípios SOLID foram considerados durante o desenvolvimento para criar um código mais manutenível e flexível.
--   **DTOs e ValidationPipe**: Utilizados para garantir a validação robusta dos dados de entrada e a clareza dos contratos da API.
--   **Injeção de Dependência**: Amplamente utilizada, aproveitando os recursos nativos do NestJS para gerenciar dependências e facilitar testes.
--   **Logging Estruturado**: Implementado para fornecer logs detalhados e consistentes, essenciais para monitoramento e depuração.
--   **Testes Abrangentes**: Foco em testes unitários para a lógica de negócio e casos de uso, e testes E2E para garantir o comportamento correto dos endpoints da API.
--   **Dockerização**: Para assegurar portabilidade, consistência entre ambientes e facilidade de deploy.
--   **Documentação com Swagger**: Para fornecer uma documentação clara, interativa e sempre atualizada da API.
--   **Segurança**: Medidas básicas de segurança como `helmet` e validação de entrada com `class-validator` para mitigar riscos comuns.
--   **Rate Limiting**: Para proteger a API contra tráfego excessivo e potencial abuso.
+A construção desta API foi guiada por uma série de decisões e princípios que visam um software de alta qualidade:
 
+*   **Clean Architecture**: Foi a base para a estrutura do projeto, buscando uma clara separação de responsabilidades, alta coesão, baixo acoplamento e, fundamentalmente, uma excelente testabilidade.
+*   **SOLID**: Os cinco princípios SOLID foram bússolas durante o desenvolvimento, ajudando a criar um código mais manutenível, flexível e compreensível.
+*   **DTOs e `ValidationPipe`**: Para garantir que os dados que entram na nossa API sejam sempre válidos e que os "contratos" entre as camadas sejam explícitos, usamos Data Transfer Objects e o sistema de validação do NestJS.
+*   **Injeção de Dependência**: Aproveitamos ao máximo o poderoso sistema de Injeção de Dependência do NestJS para gerenciar as dependências entre os componentes e facilitar a escrita de testes isolados.
+*   **Logging Estruturado**: Implementamos logs detalhados e consistentes com Winston, o que é crucial para entender o comportamento da aplicação, monitorar e depurar problemas rapidamente.
+*   **Testes Abrangentes**: Acreditamos que testar é essencial! O projeto conta com testes unitários para a lógica de negócio e os casos de uso, além de testes E2E (ponta-a-ponta) para garantir que os endpoints da API se comportem como esperado.
+*   **Dockerização**: Pensando em portabilidade e consistência entre diferentes ambientes (desenvolvimento, teste, produção), a aplicação é totalmente containerizável.
+*   **Documentação com Swagger**: Para que qualquer pessoa possa entender e interagir com a API facilmente, geramos uma documentação interativa com Swagger (OpenAPI).
+*   **Segurança Consciente**: Adotamos medidas básicas como o uso de `helmet` para proteger contra vulnerabilidades web comuns e validação rigorosa de entrada com `class-validator`.
+*   **Controle de Tráfego (Rate Limiting)**: Para proteger a API contra uso excessivo ou abusivo, implementamos um limite de taxa de requisições.

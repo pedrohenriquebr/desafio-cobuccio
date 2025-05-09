@@ -5,9 +5,11 @@ import { DeleteAllTransactionsUseCase } from '../../application/use-cases/delete
 import { GetStatisticsUseCase } from '../../application/use-cases/get-statistics/get-statistics.use-case';
 import { InMemoryTransactionRepository } from '../repositories/in-memory-transaction.repository';
 import { TRANSACTION_REPOSITORY } from '../../domain/repositories/transaction.repository.interface';
+import { MetricsModule } from '../metrics/metrics.module';
 
 @Module({
   controllers: [TransactionController],
+  imports: [MetricsModule],
   providers: [
     CreateTransactionUseCase,
     DeleteAllTransactionsUseCase,

@@ -4,6 +4,7 @@ import { TransactionModule } from './infrastructure/modules/transaction.module';
 import { LoggerMiddleware } from './infrastructure/logging/logger.middleware';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { MetricsModule } from './infrastructure/metrics/metrics.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -17,6 +18,7 @@ import { APP_GUARD } from '@nestjs/core';
       },
     ]),
     TransactionModule,
+    MetricsModule
   ],
   controllers: [], // AppController removed if not used
   providers: [

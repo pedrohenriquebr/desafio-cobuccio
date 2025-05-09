@@ -38,3 +38,6 @@ Thumbs.db
 
 # Coverage directory
 /coverage
+
+grafana-data/*
+grafana-data/.gitkeep

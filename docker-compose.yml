@@ -1,4 +1,3 @@
-version: '3.8'
 services:
   nestjs-app: # Updated service name
     build:
@@ -13,3 +12,33 @@ services:
     volumes:
       - ./logs/:/usr/src/app/logs # Para logging
     command: npm run start:dev # For development with watch mode
+    networks:
+      - app-network # Adicionar a uma rede customizada
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml # Mapeia seu arquivo de config
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    networks:
+      - app-network
+
+  grafana:
+    image: grafana/grafana-oss:latest # Usar a versão OSS
+    container_name: grafana
+    ports:
+      - "3001:3000" # Mapeia porta do host 3001 para porta 3000 do Grafana
+    volumes:
+      - ./grafana-data:/var/lib/grafana
+    depends_on:
+      - prometheus # Garante que o Prometheus inicie antes (não garante que esteja pronto)
+    networks:
+      - app-network
+
+networks: # Definir a rede customizada
+  app-network:
+    driver: bridge
