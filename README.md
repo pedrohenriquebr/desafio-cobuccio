@@ -57,7 +57,7 @@ O projeto segue uma estrutura baseada na Clean Architecture:
 ### 5.1. Pré-requisitos
 
 -   Node.js (v18 ou superior recomendado)
--   pnpm (ou Yarn/NPM)
+-   NPM
 -   Docker (para execução em container)
 
 ### 5.2. Variáveis de Ambiente
@@ -71,13 +71,13 @@ PORT=3000
 ### 5.3. Instalação de Dependências
 
 ```bash
-pnpm install
+npm install
 ```
 
 ### 5.4. Executando a Aplicação (Desenvolvimento)
 
 ```bash
-pnpm run start:dev
+npm run start:dev
 ```
 
 A aplicação estará disponível em `http://localhost:3000` (ou a porta definida em `.env`).
@@ -87,13 +87,13 @@ A documentação do Swagger estará em `http://localhost:3000/api-docs`.
 
 ```bash
 # Testes Unitários e de Integração (conforme configuração do Jest)
-pnpm run test
+npm run test
 
 # Testes E2E (se configurado um script específico, senão parte do 'test')
-pnpm run test:e2e
+npm run test:e2e
 
 # Testes com Cobertura
-pnpm run test:cov
+npm run test:cov
 ```
 
 ### 5.6. Executando com Docker
@@ -120,7 +120,7 @@ docker-compose down
 
 ## 6. Diferenciais (Opcionais Implementados/Considerados)
 
--   **CI/CD**: Pode ser facilmente configurado com GitHub Actions ou GitLab CI.
+-   **CI/CD**: Está configurado com GitHub Actions nesse repositório.
 -   **Métricas (Prometheus/Grafana)**: O NestJS possui integrações para expor métricas.
 -   **WebSockets**: Não implementado, mas seria uma adição para estatísticas em tempo real.
 
