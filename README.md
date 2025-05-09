@@ -2,8 +2,8 @@
 
 <!-- Badges -->
 <p align="center">
-  <a href="https://github.com/<YOUR_USERNAME>/<YOUR_REPOSITORY>/actions/workflows/ci.yml">
-    <img src="https://github.com/<YOUR_USERNAME>/<YOUR_REPOSITORY>/actions/workflows/ci.yml/badge.svg" alt="Build Status">
+  <a href="https://github.com/pedrohenriquebr/desafio-cobuccio/actions/workflows/ci.yml">
+    <img src="https://github.com/pedrohenriquebr/desafio-cobuccio/actions/workflows/ci.yml/badge.svg" alt="Build Status">
   </a>
   <!-- Replace with actual coverage badge if you set it up -->
   <!-- <a href="YOUR_COVERAGE_URL">
