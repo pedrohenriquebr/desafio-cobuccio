@@ -5,14 +5,6 @@
   <a href="https://github.com/pedrohenriquebr/desafio-cobuccio/actions/workflows/ci.yml">
     <img src="https://github.com/pedrohenriquebr/desafio-cobuccio/actions/workflows/ci.yml/badge.svg" alt="Build Status">
   </a>
-  <!-- Replace with actual coverage badge if you set it up -->
-  <!-- <a href="YOUR_COVERAGE_URL">
-    <img src="YOUR_COVERAGE_BADGE_URL" alt="Coverage Status">
-  </a> -->
-  <!-- Replace with actual license badge if you choose one -->
-  <!-- <a href="LICENSE_URL">
-    <img src="LICENSE_BADGE_URL" alt="License">
-  </a> -->
 </p>
 
 API RESTful desenvolvida com NestJS e TypeScript para gerenciar transações financeiras e fornecer estatísticas, seguindo os princípios da Clean Architecture.
