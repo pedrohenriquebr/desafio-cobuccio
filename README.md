@@ -11,7 +11,7 @@ API RESTful desenvolvida com NestJS e TypeScript para gerenciar transações fin
 
 ## Sumário
 
-- [1. Introdução](#1-introdução)
+- [1. Introdução](#1-introdu%C3%A7%C3%A3o)
 - [2. Requisitos Técnicos Atendidos](#2-requisitos-técnicos-atendidos)
 - [3. Endpoints da API](#3-endpoints-da-api)
 - [4. Estrutura do Projeto](#4-estrutura-do-projeto)
@@ -22,7 +22,7 @@ API RESTful desenvolvida com NestJS e TypeScript para gerenciar transações fin
   - [5.4. Executando a Aplicação](#54-executando-a-aplicação-desenvolvimento)
   - [5.5. Executando Testes](#55-executando-testes)
   - [5.6. Executando com Docker](#56-executando-com-docker)
-- [6. Diferenciais e Próximos Passos](#6-diferenciais-e-próximos-passos)
+- [6. Diferenciais e Próximos Passos](#6-diferenciais-e-monitoramento-com-prometheus--grafana)
 - [7. Decisões de Design e Boas Práticas](#7-decisões-de-design-e-boas-práticas)
 
 ## 1. Introdução
