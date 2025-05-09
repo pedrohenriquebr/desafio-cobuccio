@@ -6,6 +6,7 @@ import {
 } from '../../../domain/repositories/transaction.repository.interface';
 import { Transaction } from '../../../domain/entities/transaction.entity';
 import { StatisticsDto } from './get-statistics.dto';
+import { MetricsService } from '../../../infrastructure/metrics/metrics.service'; // Importar
 
 const mockTransactionRepository = {
   create: jest.fn(),
@@ -23,6 +24,18 @@ describe('GetStatisticsUseCase', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         GetStatisticsUseCase,
+        {
+          provide: MetricsService,
+          useValue: {
+            incrementRequestCounter: jest.fn(),
+observeRequestDuration: jest.fn(),
+setActiveTransactions: jest.fn(),
+          },
+        },
+        {
+          provide: TRANSACTION_REPOSITORY,
+          useValue: mockTransactionRepository,
+        },
         {
           provide: TRANSACTION_REPOSITORY,
           useValue: mockTransactionRepository,
